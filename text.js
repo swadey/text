@@ -9,16 +9,17 @@ exports.twenglish_cleaner   = twenglish_cleaner;
 // -------------------------------------------------------------------------------------------------------------------------
 const Entities = require('html-entities').AllHtmlEntities;
 const entities = new Entities();
+const XRE      = require('xregexp');
 
 // -------------------------------------------------------------------------------------------------------------------------
 // Constants
 // -------------------------------------------------------------------------------------------------------------------------
-const punct_word      = /^[\p{P}\p{Po}\p{Sm}]*(.*?)[\p{P}\p{Po}\p{Sm}]*$/u;
-const english_space   = /[\s\p{Zs}_-]+/ug;
-const url_pattern     = /http:\/\/[^\s]*/ug;
-const hashtag_pattern = /^#.*$/u;
-const mention_pattern = /^@.*$/u;
-const default_space   = /[\s\p{Zs}]+/ug;
+const punct_word      = XRE('^[\p{P}\p{Po}\p{Sm}]*(.*?)[\p{P}\p{Po}\p{Sm}]*$', 'g');
+const english_space   = XRE('[\s\p{Zs}_-]+', 'g');
+const url_pattern     = XRE('http:\/\/[^\s]*', 'g');
+const hashtag_pattern = XRE('^#.*$');
+const mention_pattern = XRE('^@.*$');
+const default_space   = XRE('[\s\p{Zs}]+', 'g');
 
 // -------------------------------------------------------------------------------------------------------------------------
 // Tokenizers
