@@ -13,12 +13,12 @@ const entities = new Entities();
 // -------------------------------------------------------------------------------------------------------------------------
 // Constants
 // -------------------------------------------------------------------------------------------------------------------------
-const punct_word      = /^[\p{P}\p{Po}\p{Sm}]*(.*?)[\p{P}\p{Po}\p{Sm}]*$/;
-const english_space   = /[\s\p{Zs}_-]+/g;
-const url_pattern     = /http:\/\/[^\s]*/g;
-const hashtag_pattern = /^#.*$/;
-const mention_pattern = /^@.*$/;
-const default_space   = /[\s\p{Zs}]+/g;
+const punct_word      = /^[\p{P}\p{Po}\p{Sm}]*(.*?)[\p{P}\p{Po}\p{Sm}]*$/u;
+const english_space   = /[\s\p{Zs}_-]+/ug;
+const url_pattern     = /http:\/\/[^\s]*/ug;
+const hashtag_pattern = /^#.*$/u;
+const mention_pattern = /^@.*$/u;
+const default_space   = /[\s\p{Zs}]+/ug;
 
 // -------------------------------------------------------------------------------------------------------------------------
 // Tokenizers
