@@ -43,10 +43,8 @@ function twenglish_cleaner(tw, { urls = true, hashtags = true, mentions = true }
 function twenglish_tokenizer(words) {
   return words.map(w => {
     let m = punct_word.exec(w);
-    console.log("w: " + w + " :: " + m);
     if (m != null)
       if (w[0] != "#" && w[0] != "@") {
-        console.log(" + got here: "  + m[1] + " " + m);
         w = m[1];
       }
     return w; //pattern_replace(w);
