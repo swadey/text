@@ -18,6 +18,7 @@ const english_space   = /[\s\p{Zs}_-]+/g;
 const url_pattern     = /http:\/\/[^\s]*/g;
 const hashtag_pattern = /^#.*$/;
 const mention_pattern = /^@.*$/;
+const default_space   = /[\s\p{Zs}]+/g;
 
 // -------------------------------------------------------------------------------------------------------------------------
 // Tokenizers
@@ -28,7 +29,7 @@ function twenglish_cleaner(tw, urls = true, hashtags = true, mentions = true) {
 
   ctw = entities.decode(ctw);
 
-  let words = ctw.split(/\s+/);
+  let words = ctw.split(default_space);
   words = hashtags ? words.map(w => w.match(hashtag_pattern) ? "\u0023\u20E3" : w) : words;
   words = mentions ? words.map(w => w.match(mentions_pattern) ? "\u0031\u20E3" : w) : words;
 
