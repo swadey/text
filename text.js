@@ -41,7 +41,7 @@ function twenglish_cleaner(tw, { urls = true, hashtags = true, mentions = true }
 }
 
 function twenglish_tokenizer(words) {
-  return wordsmap(w => {
+  return words.map(w => {
     let m = punct_word.exec(w);
     if (m != null)
       if (w[0] != "#" && w[0] != "@")
