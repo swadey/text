@@ -2,7 +2,7 @@
 // Exports
 // -------------------------------------------------------------------------------------------------------------------------
 exports.twenglish_cleaner   = twenglish_cleaner;
-//exports.twenglish_tokenizer = twenglish_tokenizer;
+exports.twenglish_tokenizer = twenglish_tokenizer;
 
 // -------------------------------------------------------------------------------------------------------------------------
 // Imports
@@ -20,6 +20,7 @@ const url_pattern     = XRE('https?://[^\\s]*', 'g');
 const hashtag_pattern = XRE('^#.*$');
 const mention_pattern = XRE('^@.*$');
 const default_space   = XRE('[\\s\\p{Zs}]+', 'g');
+const punct           = XRE('^(\\p{P}|\\p{S})+$');
 
 // -------------------------------------------------------------------------------------------------------------------------
 // Tokenizers
@@ -34,5 +35,17 @@ function twenglish_cleaner(tw, { urls = true, hashtags = true, mentions = true }
   words = hashtags ? words.map(w => w.match(hashtag_pattern) ? "\u0023\u20E3" : w) : words;
   words = mentions ? words.map(w => w.match(mention_pattern) ? "\u0031\u20E3" : w) : words;
 
-  return words.join(" ");
+  new_words = twenglish_tokenizer(words);
+
+  return new_words.join(" ");
+}
+
+function twenglish_tokenizer(words) {
+  return wordsmap(w => {
+    let m = punct_word.exec(w);
+    if (m != null)
+      if (w[0] != "#" && w[0] != "@")
+        w = m[1];
+    return w; //pattern_replace(w);
+  }).filter(w => !w.match(punct));
 }
