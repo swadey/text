@@ -14,12 +14,12 @@ const XRE      = require('xregexp');
 // -------------------------------------------------------------------------------------------------------------------------
 // Constants
 // -------------------------------------------------------------------------------------------------------------------------
-const punct_word      = XRE('^[\p{P}\p{Po}\p{Sm}]*(.*?)[\p{P}\p{Po}\p{Sm}]*$', 'g');
-const english_space   = XRE('[\s\p{Zs}_-]+', 'g');
-const url_pattern     = XRE('http:\/\/[^\s]*', 'g');
+const punct_word      = XRE('^[\\p{P}\\p{Po}\\p{Sm}]*(.*?)[\\p{P}\\p{Po}\\p{Sm}]*$', 'g');
+const english_space   = XRE('[\\s\\p{Zs}_-]+', 'g');
+const url_pattern     = XRE('http://[^\\s]*', 'g');
 const hashtag_pattern = XRE('^#.*$');
 const mention_pattern = XRE('^@.*$');
-const default_space   = XRE('[\s\p{Zs}]+', 'g');
+const default_space   = XRE('[\\s\\p{Zs}]+', 'g');
 
 // -------------------------------------------------------------------------------------------------------------------------
 // Tokenizers
