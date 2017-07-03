@@ -11,5 +11,8 @@
   "dependencies": {
     "html-entities": "^1.2.1",
     "xregexp": "^3.2.0"
+  },
+  "devDependencies": {
+    "chai": "*"
   }
 }
