@@ -26,7 +26,7 @@ const punct           = XRE('^(\\p{P}|\\p{S})+$');
 // Tokenizers
 // -------------------------------------------------------------------------------------------------------------------------
 function twenglish_cleaner(tw, { urls = true, hashtags = true, mentions = true } = {}) {
-  let ctw = tw.normalize('NFKC').replace(default_space, " ");
+  let ctw = tw.normalize('NFKC').replace(default_space, " ").replace(/^RT\s+@\S+\s+/, "").replace(/^RT\s+/, "");
   ctw = urls ? ctw.replace(url_pattern, "\u0030\u20E3") : ctw;
 
   ctw = entities.decode(ctw);

@@ -10,5 +10,7 @@ text.twenglish_cleaner('word.').should.equal("word");
 text.twenglish_cleaner('this is "a" "word.').should.equal("this is a word");
 text.twenglish_cleaner('#word...', { hashtags : false }).should.equal("#word");
 text.twenglish_cleaner('#word/#test', { hashtags : false }).should.equal("#word #test");
+text.twenglish_cleaner('RT this is a #test.', { hashtags : false }).should.equal("this is a #test");
+text.twenglish_cleaner('RT @james this is a #test.', { hashtags : false }).should.equal("this is a #test");
 
 
