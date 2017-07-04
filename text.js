@@ -14,7 +14,7 @@ const XRE      = require('xregexp');
 // -------------------------------------------------------------------------------------------------------------------------
 // Constants
 // -------------------------------------------------------------------------------------------------------------------------
-const punct_word      = XRE('^[\\p{P}\\p{Po}\\p{Sm}]*(.*?)[\\p{P}\\p{Po}\\p{Sm}]*$');
+const punct_word      = XRE('^([\\p{P}\\p{Po}\\p{Sm}]*)(.*?)[\\p{P}\\p{Po}\\p{Sm}]*$');
 const english_space   = XRE('[\\s\\p{Zs}_-]+', 'g');
 const url_pattern     = XRE('https?://[^\\s]*', 'g');
 const hashtag_pattern = XRE('^#.*$');
@@ -44,9 +44,8 @@ function twenglish_tokenizer(words) {
   return words.map(w => {
     let m = punct_word.exec(w);
     if (m != null)
-      if (w[0] != "#" && w[0] != "@") {
-        w = m[1];
-      }
+      if (w[0] != "@")
+        w = m[2];
     return w; //pattern_replace(w);
   }).filter(w => !w.match(punct));
 }
