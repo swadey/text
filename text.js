@@ -30,8 +30,9 @@ function twenglish_cleaner(tw, { urls = true, hashtags = true, mentions = true }
   ctw = urls ? ctw.replace(url_pattern, "\u0030\u20E3") : ctw;
 
   ctw = entities.decode(ctw);
+  ctw = ctw.replace(/#/g, " #"); 
 
-  let words = ctw.split(default_space);
+  let words = ctw.trim().split(default_space);
   words = hashtags ? words.map(w => w.match(hashtag_pattern) ? "\u0023\u20E3" : w) : words;
   words = mentions ? words.map(w => w.match(mention_pattern) ? "\u0031\u20E3" : w) : words;
 
