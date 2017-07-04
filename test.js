@@ -8,5 +8,6 @@ chai.config.showDiff = true;
 text.twenglish_cleaner('this is a url http://test.com').should.equal("this is a url 0⃣");
 text.twenglish_cleaner('word.').should.equal("word");
 text.twenglish_cleaner('this is "a" "word.').should.equal("this is a word");
+text.twenglish_cleaner('#word...', { hashtags : false }).should.equal("#word");
 
 

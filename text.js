@@ -45,7 +45,10 @@ function twenglish_tokenizer(words) {
     let m = punct_word.exec(w);
     if (m != null)
       if (w[0] != "@")
-        w = m[2];
+        if (w[0] == "#")
+          w = "#" + m[2];
+        else 
+          w = m[2];
     return w; //pattern_replace(w);
   }).filter(w => !w.match(punct));
 }
