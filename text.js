@@ -183,8 +183,8 @@ const ascii_emojis    = {
 const elookup = [];
 
 for (var ee in ascii_emojis) {
-  let pat = new RegExp('(^|\\b)' + escape(ee) + '(\\b|$)', 'g');
-  elookup.push({ pattern: pat, replace: ascii_emojis[ee] });
+  let pat = new RegExp('(^|\\s)' + escape(ee) + '(\\b|$)', 'g');
+  elookup.push({ pattern: pat, replace: "$1" + ascii_emojis[ee] });
 }
 
 function escape(s) {
