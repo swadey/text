@@ -21,7 +21,7 @@ const mention         = XRE('(^|\\s)@\\w+?(\\b|$)', 'g');
 const default_space   = XRE('[\\s\\p{Zs}]+', 'g');
 const punct           = XRE('^(\\p{P}|\\p{S})+$');
 const breaking_punct  = XRE('(?!#)([\\p{Ps}\\p{Pe}\\p{Pi}\\p{Pf}\\p{Po}]+)', 'g');
-const currency        = XRE('(^|\\b)[+-]?\\p{Sc}\\d+([.,]\\d+)*(\\b|$)', 'g');
+const currency        = XRE('(^|\\s)[+-]?\\p{Sc}\\d+([.,]\\d+)*(\\b|$)', 'g');
 const percent         = XRE('(^|\\b)[+-]?\\d+([.,]\\d+)*%(\\b|$)', 'g');
 const number          = XRE('(^|\\b)[+-]?\\d+([.,]\\d+)*(\\b|$)', 'g');
 const url             = XRE('(^|\\b)(https?|s?ftp):\\S+(\\b|$)', 'g');
@@ -207,7 +207,7 @@ function twenglish_cleaner(tw, { urls = true, hashtags = false, mentions = true 
   ctw = entities.decode(ctw);
   ctw = ctw.replace(/#/g, " #");
   ctw = normalize_emojis(ctw);
-  ctw = ctw.replace(currency, 'c\u20e3')
+  ctw = ctw.replace(currency, '$1c\u20e3')
     .replace(percent, 'p\u20e3')
     .replace(url, 'u\u20e3')
     .replace(time1, 't\u20e3').replace(time2, 't\u20e3')
