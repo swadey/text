@@ -17,7 +17,7 @@ const XRE      = require('xregexp');
 const punct_word      = XRE('^([\\p{P}\\p{Po}\\p{Sm}]*)(.*?)[\\p{P}\\p{Po}\\p{Sm}]*$');
 const english_space   = XRE('[\\s\\p{Zs}_-]+', 'g');
 const hashtag         = XRE('^#.*$');
-const mention         = XRE('(^|\s)@\\w+\\b', 'g');
+const mention         = XRE('(^|\\s)@\\w+?(\\b|$)', 'g');
 const default_space   = XRE('[\\s\\p{Zs}]+', 'g');
 const punct           = XRE('^(\\p{P}|\\p{S})+$');
 const breaking_punct  = XRE('(?!#)([\\p{Ps}\\p{Pe}\\p{Pi}\\p{Pf}\\p{Po}]+)', 'g');
@@ -31,6 +31,8 @@ const date1           = XRE('(^|\\b)\\d+[-/]\\d+(\\b|$)', 'g');
 const date2           = XRE('(^|\\b)\\d+[-/]\\d+[-/]\\d+(\\b|$)', 'g');
 const email           = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gi; ///(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})/gi; 
 //XRE('\\b[^@]+@[^@]+\\b', 'g');
+
+console.log(mention);
 
 // -------------------------------------------------------------------------------------------------------------------------
 // Tokenizers
@@ -52,7 +54,7 @@ function twenglish_cleaner(tw, { urls = true, hashtags = false, mentions = true 
 
   let words = ctw.trim().split(default_space); //.map(w => pattern_replace(w, { urls: urls, hashtags : hashtags, mentions : mentions }))
 
-  //console.log(words);
+  console.log(words);
   let new_words = words.map(clean_word).filter(w => w != "" && !w.match(punct));//.map(w => pattern_replace(w, { urls: urls, hashtags : hashtags, mentions : mentions }));
   return new_words.join(" ");
 }

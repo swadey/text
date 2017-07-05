@@ -9,9 +9,11 @@ text.twenglish_cleaner('this is a url http://test.com').should.equal("this is a 
 text.twenglish_cleaner('word.').should.equal("word");
 text.twenglish_cleaner('this is "a" "word.').should.equal("this is a word");
 text.twenglish_cleaner('#word...', { hashtags : false }).should.equal("#word");
+text.twenglish_cleaner('#word #tag', { hashtags : false }).should.equal("#word #tag");
 text.twenglish_cleaner('#word/#test', { hashtags : false }).should.equal("#word #test");
 text.twenglish_cleaner('RT this is a #test.', { hashtags : false }).should.equal("this is a #test");
 text.twenglish_cleaner('RT @james this is a #test.', { hashtags : false }).should.equal("this is a #test");
+text.twenglish_cleaner('RT @james: this is a #test.', { hashtags : false }).should.equal("this is a #test");
 text.twenglish_cleaner('test...word', { hashtags : false }).should.equal("test word");
 text.twenglish_cleaner('test...#word', { hashtags : false }).should.equal("test #word");
 text.twenglish_cleaner('test#..word', { hashtags : false }).should.equal("test word");
@@ -34,4 +36,5 @@ text.twenglish_cleaner('@gabycasas Hi Gaby, thanks for getting in touch, please 
 text.twenglish_cleaner('$1.00', { hashtags : false }).should.equal("c\u20e3");
 text.twenglish_cleaner('$100,000.0', { hashtags : false }).should.equal("c\u20e3");
 text.twenglish_cleaner('$1, dollar', { hashtags : false }).should.equal("c\u20e3 dollar");
+text.twenglish_cleaner('@a @b', { hashtags : false }).should.equal("m\u20e3 m\u20e3");
 
