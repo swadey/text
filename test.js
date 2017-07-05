@@ -37,4 +37,6 @@ text.twenglish_cleaner('$1.00', { hashtags : false }).should.equal("c\u20e3");
 text.twenglish_cleaner('$100,000.0', { hashtags : false }).should.equal("c\u20e3");
 text.twenglish_cleaner('$1, dollar', { hashtags : false }).should.equal("c\u20e3 dollar");
 text.twenglish_cleaner('@a @b', { hashtags : false }).should.equal("m\u20e3 m\u20e3");
+text.twenglish_cleaner('<3', { hashtags : false }).should.equal("💗");
+
 
