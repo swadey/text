@@ -205,12 +205,14 @@ function twenglish_cleaner(tw, { urls = true, hashtags = false, mentions = true 
   ctw = entities.decode(ctw);
   ctw = ctw.replace(/#/g, " #");
   ctw = ctw.replace(currency, '$1c\u20e3')
-    .replace(percent, 'p\u20e3')
-    .replace(url, 'u\u20e3')
-    .replace(time1, 't\u20e3').replace(time2, 't\u20e3')
-    .replace(date2, 'd\u20e3').replace(date1, 'd\u20e3')
-    .replace(mention, '$1m\u20e3')
-    .replace(email, 'e\u20e3');
+           .replace(percent, 'p\u20e3')
+           .replace(url, 'u\u20e3')
+           .replace(time1, 't\u20e3').replace(time2, 't\u20e3')
+           .replace(date2, 'd\u20e3').replace(date1, 'd\u20e3')
+           .replace(mention, '$1m\u20e3')
+           .replace(email, 'e\u20e3')
+           .replace(/b\*tch/gi, "bitch")
+           .replace(/f\*ck/gi, "fuck");
     
   ctw = normalize_emojis(ctw).replace(number, 'n\u20e3');
   ctw = ctw.replace(breaking_punct, " $1 ");
