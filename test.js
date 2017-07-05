@@ -12,5 +12,12 @@ text.twenglish_cleaner('#word...', { hashtags : false }).should.equal("#word");
 text.twenglish_cleaner('#word/#test', { hashtags : false }).should.equal("#word #test");
 text.twenglish_cleaner('RT this is a #test.', { hashtags : false }).should.equal("this is a #test");
 text.twenglish_cleaner('RT @james this is a #test.', { hashtags : false }).should.equal("this is a #test");
-
+text.twenglish_cleaner('test...word', { hashtags : false }).should.equal("test word");
+text.twenglish_cleaner('test...#word', { hashtags : false }).should.equal("test #word");
+text.twenglish_cleaner('test#..word', { hashtags : false }).should.equal("test word");
+text.twenglish_cleaner('test,..word', { hashtags : false }).should.equal("test word");
+text.twenglish_cleaner('test@@@word', { hashtags : false }).should.equal("test word");
+text.twenglish_cleaner('test"""word', { hashtags : false }).should.equal("test word");
+text.twenglish_cleaner('test#word', { hashtags : false }).should.equal("test #word");
+text.twenglish_cleaner('#test#word', { hashtags : false }).should.equal("#test #word");
 
