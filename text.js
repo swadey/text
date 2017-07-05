@@ -182,10 +182,11 @@ const ascii_emojis    = {
 
 const elookup = [];
 
-for (var ee in ascii_emojis) {
-  let pat = new RegExp('(^|\\s)' + escape(ee) + '(\\b|$)', 'g');
-  elookup.push({ pattern: pat, replace: "$1" + ascii_emojis[ee] });
-}
+const epattern = new RegExp('(^|\\s)(' + Object.keys(ascii_emojis).map(escape).join("|") + ')(\\s|$)', 'g');
+//for (var ee in ascii_emojis) {
+//  let pat = new RegExp( + escape(ee) + '(\\b|$)', 'g');
+//  elookup.push({ pattern: pat, replace: "$1" + ascii_emojis[ee] });
+//}
 
 function escape(s) {
  return s.replace(/[-\/\\^$*+?.()|\[\]{}]/g, '\\$&');
@@ -195,10 +196,7 @@ function escape(s) {
 // Tokenizers
 // -------------------------------------------------------------------------------------------------------------------------
 function normalize_emojis(s) {
-  for (let {pattern, replace} of elookup) {
-    s = s.replace(pattern, replace);
-  }
-  return s;
+  return s.replace(epattern, (m, p1, p2, p3, offset, s) => p1 + ascii_emojis[p2] + p3);
 }
 
 function twenglish_cleaner(tw, { urls = true, hashtags = false, mentions = true } = {}) {
@@ -206,18 +204,18 @@ function twenglish_cleaner(tw, { urls = true, hashtags = false, mentions = true 
 
   ctw = entities.decode(ctw);
   ctw = ctw.replace(/#/g, " #");
-  ctw = normalize_emojis(ctw);
   ctw = ctw.replace(currency, '$1c\u20e3')
     .replace(percent, 'p\u20e3')
     .replace(url, 'u\u20e3')
     .replace(time1, 't\u20e3').replace(time2, 't\u20e3')
     .replace(date2, 'd\u20e3').replace(date1, 'd\u20e3')
     .replace(mention, '$1m\u20e3')
-    .replace(email, 'e\u20e3')
-    .replace(number, 'n\u20e3');
+    .replace(email, 'e\u20e3');
+    
+  ctw = normalize_emojis(ctw).replace(number, 'n\u20e3');
   ctw = ctw.replace(breaking_punct, " $1 ");
 
-  let words = ctw.trim().split(default_space); //.map(w => pattern_replace(w, { urls: urls, hashtags : hashtags, mentions : mentions }))
+  let words = ctw.trim().split(default_space);
 
   //console.log(words);
   let new_words = words.map(clean_word).filter(w => w != "" && !w.match(punct));//.map(w => pattern_replace(w, { urls: urls, hashtags : hashtags, mentions : mentions }));
