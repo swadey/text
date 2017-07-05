@@ -16,8 +16,16 @@ text.twenglish_cleaner('test...word', { hashtags : false }).should.equal("test w
 text.twenglish_cleaner('test...#word', { hashtags : false }).should.equal("test #word");
 text.twenglish_cleaner('test#..word', { hashtags : false }).should.equal("test word");
 text.twenglish_cleaner('test,..word', { hashtags : false }).should.equal("test word");
-text.twenglish_cleaner('test@@@word', { hashtags : false }).should.equal("test word");
 text.twenglish_cleaner('test"""word', { hashtags : false }).should.equal("test word");
 text.twenglish_cleaner('test#word', { hashtags : false }).should.equal("test #word");
 text.twenglish_cleaner('#test#word', { hashtags : false }).should.equal("#test #word");
+text.twenglish_cleaner('12/10', { hashtags : false }).should.equal("--date--");
+text.twenglish_cleaner('12/10/92', { hashtags : false }).should.equal("--date--");
+text.twenglish_cleaner('12/10/1992', { hashtags : false }).should.equal("--date--");
+text.twenglish_cleaner('test@@@word', { hashtags : false }).should.equal("test word");
+text.twenglish_cleaner('test@word', { hashtags : false }).should.equal("--email--");
+text.twenglish_cleaner('test@word.com', { hashtags : false }).should.equal("--email--");
+text.twenglish_cleaner('12am', { hashtags : false }).should.equal("--time--");
+text.twenglish_cleaner('12:00am', { hashtags : false }).should.equal("--time--");
+
 
