@@ -2,7 +2,7 @@
 // Exports
 // -------------------------------------------------------------------------------------------------------------------------
 exports.twenglish_cleaner   = twenglish_cleaner;
-exports.twenglish_tokenizer = twenglish_tokenizer;
+//exports.twenglish_tokenizer = twenglish_tokenizer;
 
 // -------------------------------------------------------------------------------------------------------------------------
 // Imports
@@ -16,21 +16,21 @@ const XRE      = require('xregexp');
 // -------------------------------------------------------------------------------------------------------------------------
 const punct_word      = XRE('^([\\p{P}\\p{Po}\\p{Sm}]*)(.*?)[\\p{P}\\p{Po}\\p{Sm}]*$');
 const english_space   = XRE('[\\s\\p{Zs}_-]+', 'g');
-const url_pattern     = XRE('https?://[^\\s]*', 'g');
 const hashtag         = XRE('^#.*$');
-const mention         = XRE('^@[^@]+$');
+const mention         = XRE('(^|\s)@\\w+\\b', 'g');
 const default_space   = XRE('[\\s\\p{Zs}]+', 'g');
 const punct           = XRE('^(\\p{P}|\\p{S})+$');
 const breaking_punct  = XRE('(?!#)([\\p{Ps}\\p{Pe}\\p{Pi}\\p{Pf}\\p{Po}]+)', 'g');
-const currency        = XRE('^[+-]?\\p{Sc}\\d+([.,]\\d+)*$');
-const percent         = XRE('^[+-]?\\d+([.,]\\d+)*%$');
-const number          = XRE('^[+-]?\\d+([.,]\\d+)*$');
-const url             = XRE('^(https?|s?ftp):.*$');
-const time1           = XRE('^\\d+:\\d+(am|pm)$');
-const time2           = XRE('^\\d+(am|pm)$');
-const date1           = XRE('^\\d+[-/]\\d+$');
-const date2           = XRE('^\\d+[-/]\\d+[-/]\\d+$');
-const email           = XRE('^[^@]+@[^@]+$');
+const currency        = XRE('(^|\\b)[+-]?\\p{Sc}\\d+([.,]\\d+)*(\\b|$)', 'g');
+const percent         = XRE('(^|\\b)[+-]?\\d+([.,]\\d+)*%(\\b|$)', 'g');
+const number          = XRE('(^|\\b)[+-]?\\d+([.,]\\d+)*(\\b|$)', 'g');
+const url             = XRE('(^|\\b)(https?|s?ftp):\\S+(\\b|$)', 'g');
+const time1           = XRE('(^|\\b)\\d+:\\d+(am|pm)(\\b|$)', 'g');
+const time2           = XRE('(^|\\b)\\d+(am|pm)(\\b|$)', 'g');
+const date1           = XRE('(^|\\b)\\d+[-/]\\d+(\\b|$)', 'g');
+const date2           = XRE('(^|\\b)\\d+[-/]\\d+[-/]\\d+(\\b|$)', 'g');
+const email           = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gi; ///(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})/gi; 
+//XRE('\\b[^@]+@[^@]+\\b', 'g');
 
 // -------------------------------------------------------------------------------------------------------------------------
 // Tokenizers
@@ -40,26 +40,36 @@ function twenglish_cleaner(tw, { urls = true, hashtags = false, mentions = true 
 
   ctw = entities.decode(ctw);
   ctw = ctw.replace(/#/g, " #");
-  ctw = ctw.trim().split(default_space).map(w => pattern_replace(w, { urls: urls, hashtags : hashtags, mentions : mentions })).join(" ");
+  ctw = ctw.replace(currency, 'c\u20e3')
+    .replace(percent, 'p\u20e3')
+    .replace(url, 'u\u20e3')
+    .replace(time1, 't\u20e3').replace(time2, 't\u20e3')
+    .replace(date2, 'd\u20e3').replace(date1, 'd\u20e3')
+    .replace(mention, '$1m\u20e3')
+    .replace(email, 'e\u20e3')
+    .replace(number, 'n\u20e3');
   ctw = ctw.replace(breaking_punct, " $1 ");
 
-  let words = ctw.trim().split(default_space);
+  let words = ctw.trim().split(default_space); //.map(w => pattern_replace(w, { urls: urls, hashtags : hashtags, mentions : mentions }))
 
   //console.log(words);
-  new_words = twenglish_tokenizer(words);
+  let new_words = words.map(clean_word).filter(w => w != "" && !w.match(punct));//.map(w => pattern_replace(w, { urls: urls, hashtags : hashtags, mentions : mentions }));
   return new_words.join(" ");
+}
+
+function clean_word(w) {
+  let m = punct_word.exec(w);
+  if (m != null) {
+    if (m[1].match(/^.*[#@]$/))
+      w = m[1][m[1].length-1] + m[2];
+    else
+      w = m[2];
+  }
+  return w;
 }
 
 function twenglish_tokenizer(words) {
   return words.map(w => {
-    let m = punct_word.exec(w);
-    if (m != null)
-      if (w[0] != "@" && w.slice(0, 2) != "--")
-        if (w[0] == "#")
-          w = "#" + m[2];
-        else 
-          w = m[2];
-    return w;
   }).filter(w => !w.match(punct) && w != "");
 }
 

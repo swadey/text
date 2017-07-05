@@ -23,7 +23,7 @@ text.twenglish_cleaner('12/10', { hashtags : false }).should.equal("d\u20e3");
 text.twenglish_cleaner('12/10/92', { hashtags : false }).should.equal("d\u20e3");
 text.twenglish_cleaner('12/10/1992', { hashtags : false }).should.equal("d\u20e3");
 text.twenglish_cleaner('test@@@word', { hashtags : false }).should.equal("test word");
-text.twenglish_cleaner('test@word', { hashtags : false }).should.equal("e\u20e3");
+text.twenglish_cleaner('test@word', { hashtags : false }).should.equal("test word");
 text.twenglish_cleaner('test@word.com', { hashtags : false }).should.equal("e\u20e3");
 text.twenglish_cleaner('12am', { hashtags : false }).should.equal("t\u20e3");
 text.twenglish_cleaner('12:00am', { hashtags : false }).should.equal("t\u20e3")
@@ -31,5 +31,7 @@ text.twenglish_cleaner('well-timed', { hashtags : false }).should.equal("well-ti
 text.twenglish_cleaner('y\'all', { hashtags : false }).should.equal("y all");
 text.twenglish_cleaner('i\'m it\'s', { hashtags : false }).should.equal("i m it s");
 text.twenglish_cleaner('@gabycasas Hi Gaby, thanks for getting in touch, please send our Talent Co-ordinator a message at AlinaneK@matinee.co.uk for more details.').should.equal("m\u20e3 Hi Gaby thanks for getting in touch please send our Talent Co-ordinator a message at e\u20e3 for more details");
-
+text.twenglish_cleaner('$1.00', { hashtags : false }).should.equal("c\u20e3");
+text.twenglish_cleaner('$100,000.0', { hashtags : false }).should.equal("c\u20e3");
+text.twenglish_cleaner('$1, dollar', { hashtags : false }).should.equal("c\u20e3 dollar");
 
