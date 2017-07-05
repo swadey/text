@@ -17,8 +17,8 @@ const XRE      = require('xregexp');
 const punct_word      = XRE('^([\\p{P}\\p{Po}\\p{Sm}]*)(.*?)[\\p{P}\\p{Po}\\p{Sm}]*$');
 const english_space   = XRE('[\\s\\p{Zs}_-]+', 'g');
 const url_pattern     = XRE('https?://[^\\s]*', 'g');
-const hashtag_pattern = XRE('^#.*$');
-const mention_pattern = XRE('^@[^@]+$');
+const hashtag         = XRE('^#.*$');
+const mention         = XRE('^@[^@]+$');
 const default_space   = XRE('[\\s\\p{Zs}]+', 'g');
 const punct           = XRE('^(\\p{P}|\\p{S})+$');
 const breaking_punct  = XRE('(?!#)([\\p{Ps}\\p{Pe}\\p{Pi}\\p{Pf}\\p{Po}]+)', 'g');
@@ -35,18 +35,15 @@ const email           = XRE('^[^@]+@[^@]+$');
 // -------------------------------------------------------------------------------------------------------------------------
 // Tokenizers
 // -------------------------------------------------------------------------------------------------------------------------
-function twenglish_cleaner(tw, { urls = true, hashtags = true, mentions = true } = {}) {
+function twenglish_cleaner(tw, { urls = true, hashtags = false, mentions = true } = {}) {
   let ctw = tw.normalize('NFKC').replace(default_space, " ").replace(/^RT\s+@\S+\s+/, "").replace(/^RT\s+/, "");
-  ctw = urls ? ctw.replace(url_pattern, "\u0030\u20E3") : ctw;
 
   ctw = entities.decode(ctw);
   ctw = ctw.replace(/#/g, " #");
-  ctw = ctw.trim().split(default_space).map(pattern_replace).join(" ");
+  ctw = ctw.trim().split(default_space).map(w => pattern_replace(w, { urls: urls, hashtags : hashtags, mentions : mentions })).join(" ");
   ctw = ctw.replace(breaking_punct, " $1 ");
 
   let words = ctw.trim().split(default_space);
-  words = hashtags ? words.map(w => w.match(hashtag_pattern) ? "\u0023\u20E3" : w) : words;
-  words = mentions ? words.map(w => w.match(mention_pattern) ? "\u0031\u20E3" : w) : words;
 
   //console.log(words);
   new_words = twenglish_tokenizer(words);
@@ -62,17 +59,20 @@ function twenglish_tokenizer(words) {
           w = "#" + m[2];
         else 
           w = m[2];
-    return w; //pattern_replace(w);
+    return w;
   }).filter(w => !w.match(punct) && w != "");
 }
 
-function pattern_replace(w) {
-  if (w.match(currency)) return "--currency--";
-  if (w.match(percent)) return "--percent--";
-  if (w.match(number)) return "--number--";
-  if (w.match(url)) return "--url--";
-  if (w.match(time1) || w.match(time2)) return "--time--";
-  if (w.match(date1) || w.match(date2)) return "--date--";
-  if (w.match(email)) return "--email--";
-  else return w;
+function pattern_replace(w, { urls = true, hashtags = false, mentions = true } = {}) {
+  if (w.match(currency)) return "c\u20e3";
+  if (w.match(percent)) return "p\u20e3";
+  if (w.match(number)) return "n\u20e3";
+  if (urls && w.match(url)) return "u\u20e3";
+  if (w.match(time1) || w.match(time2)) return "t\u20e3";
+  if (w.match(date1) || w.match(date2)) return "d\u20e3";
+  if (mentions && w.match(mention)) return "m\u20e3";
+  if (hashtags && w.match(hashtag)) return "h\u20e3";
+  if (w.match(email)) return "e\u20e3";
+
+  return w;
 }
