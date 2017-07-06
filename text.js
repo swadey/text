@@ -180,13 +180,7 @@ const ascii_emojis    = {
   '>_>^'       : '😤'
 };
 
-const elookup = [];
-
 const epattern = new RegExp('(^|\\s)(' + Object.keys(ascii_emojis).map(escape).join("|") + ')(\\s|$)', 'g');
-//for (var ee in ascii_emojis) {
-//  let pat = new RegExp( + escape(ee) + '(\\b|$)', 'g');
-//  elookup.push({ pattern: pat, replace: "$1" + ascii_emojis[ee] });
-//}
 
 function escape(s) {
  return s.replace(/[-\/\\^$*+?.()|\[\]{}]/g, '\\$&');
@@ -220,7 +214,7 @@ function twenglish_cleaner(tw, { urls = true, hashtags = false, mentions = true 
   let words = ctw.trim().split(default_space);
 
   //console.log(words);
-  let new_words = words.map(clean_word).filter(w => w != "" && !w.match(punct));//.map(w => pattern_replace(w, { urls: urls, hashtags : hashtags, mentions : mentions }));
+  let new_words = words.map(clean_word).filter(w => w != "" && !w.match(punct));
   return new_words.join(" ");
 }
 
@@ -232,24 +226,5 @@ function clean_word(w) {
     else
       w = m[2];
   }
-  return w;
-}
-
-function twenglish_tokenizer(words) {
-  return words.map(w => {
-  }).filter(w => !w.match(punct) && w != "");
-}
-
-function pattern_replace(w, { urls = true, hashtags = false, mentions = true } = {}) {
-  if (w.match(currency)) return "c\u20e3";
-  if (w.match(percent)) return "p\u20e3";
-  if (w.match(number)) return "n\u20e3";
-  if (urls && w.match(url)) return "u\u20e3";
-  if (w.match(time1) || w.match(time2)) return "t\u20e3";
-  if (w.match(date1) || w.match(date2)) return "d\u20e3";
-  if (mentions && w.match(mention)) return "m\u20e3";
-  if (hashtags && w.match(hashtag)) return "h\u20e3";
-  if (w.match(email)) return "e\u20e3";
-
   return w;
 }
