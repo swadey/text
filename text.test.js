@@ -1,28 +1,32 @@
 const text   = require('./text');
-/* const chai   = require('chai');  
- * const assert = chai.assert;    // Using Assert style 
- * const expect = chai.expect;    // Using Expect style 
- * const should = chai.should();  // Using Should style
- * */
-//chai.config.showDiff = true;
+
 test("basic cleaning", () => {
   expect(text.twe_cleaner('word.')).toBe("word");
   expect(text.twe_cleaner('this is "a" "word.')).toBe("this is a word");
-  expect(text.twe_cleaner('#word...')).toBe("#word");
-  expect(text.twe_cleaner('#word #tag')).toBe("#word #tag");
-  expect(text.twe_cleaner('#word/#test')).toBe("#word #test");
   expect(text.twe_cleaner('test...word')).toBe("test word");
   expect(text.twe_cleaner('test...#word')).toBe("test #word");
   expect(text.twe_cleaner('test#..word')).toBe("test word");
   expect(text.twe_cleaner('test,..word')).toBe("test word");
   expect(text.twe_cleaner('test"""word')).toBe("test word");
-  expect(text.twe_cleaner('test#word')).toBe("test #word");
-  expect(text.twe_cleaner('#test#word')).toBe("#test #word");
   expect(text.twe_cleaner('test@@@word')).toBe("test word");
   expect(text.twe_cleaner('test@word')).toBe("test word");
+});
+
+test("quote/contraction handling", () => {
+  expect(text.twe_cleaner('test,\'.word')).toBe("test word");
+  expect(text.twe_cleaner('test\' .word')).toBe("test word");
+  expect(text.twe_cleaner('test\'em .word')).toBe("test em word");
   expect(text.twe_cleaner('y\'all')).toBe("y'all");
   expect(text.twe_cleaner('i\'m it\'s')).toBe("i'm it's");
   expect(text.twe_cleaner("I'M IT'S")).toBe("I'M IT'S");
+});
+
+test("hashtag handling", () => {
+  expect(text.twe_cleaner('#word...')).toBe("#word");
+  expect(text.twe_cleaner('#word #tag')).toBe("#word #tag");
+  expect(text.twe_cleaner('#word/#test')).toBe("#word #test");
+  expect(text.twe_cleaner('test#word')).toBe("test #word");
+  expect(text.twe_cleaner('#test#word')).toBe("#test #word");
 });
 
 test("retweet handling", () => {

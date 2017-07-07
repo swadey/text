@@ -20,7 +20,7 @@ const hashtag         = XRE('^#.*$');
 const mention         = XRE('(^|\\s)@\\w+?(\\b|$)', 'g');
 const default_space   = XRE('[\\s\\p{Zs}]+', 'g');
 const punct           = XRE('^(\\p{P}|\\p{S})+$');
-const breaking_punct  = XRE('(?!#)([\\p{Ps}\\p{Pe}\\p{Pi}\\p{Pf}\\p{Po}]+)', 'g');
+const breaking_punct  = XRE('(?![#])([\\p{Ps}\\p{Pe}\\p{Pi}\\p{Pf}\\p{Po}]+)', 'g');
 const currency        = XRE('(^|\\s)[+-]?\\p{Sc}\\d+([.,]\\d+)*(\\b|$)', 'g');
 const percent         = XRE('(^|\\b)[+-]?\\d+([.,]\\d+)*%(\\b|$)', 'g');
 const number          = XRE('(^|\\b)[+-]?\\d+([.,]\\d+)*(\\b|$)', 'g');
@@ -40,7 +40,7 @@ function fix_contractions(s) {
 }
 
 function twe_cleaner(tw) {
-  let ctw = tw.normalize('NFKC').replace(default_space, " ").replace(/^RT\s+@\S+\s+/, "").replace(/^RT\s+/, "");
+  let ctw = tw.normalize('NFKC').replace(default_space, " ").replace(/^RT(\s+@\S+)?\s+/, "");//.replace(/^RT\s+/, "");
 
   ctw = entities.decode(ctw);
   ctw = ctw.replace(/#/g, " #");
