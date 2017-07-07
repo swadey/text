@@ -36,7 +36,7 @@ const contractions    = /(^|\b)(.*?)(n't|'ll|'d|'re|'ve|'s|'m|'all)(\b|$)/gi;
 // Tokenizers
 // -------------------------------------------------------------------------------------------------------------------------
 function fix_contractions(s) {
-  return s.replace(contractions, (m, p1, p2, p3, offset, s) => p2 + p3.replace("'", "~"));
+  return s.replace(contractions, (m, p1, p2, p3, offset, s) => p2 + p3.replace("'", "___"));
 }
 
 function twe_cleaner(tw) {
@@ -62,7 +62,7 @@ function twe_cleaner(tw) {
 
   //console.log(words);
   let new_words = words.map(clean_word).filter(w => w != "" && !w.match(punct));
-  return new_words.join(" ")//.replace(/___/g, "'");
+  return new_words.join(" ").replace(/___/g, "'");
 }
 
 function clean_word(w) {
