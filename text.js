@@ -30,6 +30,7 @@ const time2           = XRE('(^|\\b)\\d+(am|pm)(\\b|$)', 'g');
 const date1           = XRE('(^|\\b)\\d+[-/]\\d+(\\b|$)', 'g');
 const date2           = XRE('(^|\\b)\\d+[-/]\\d+[-/]\\d+(\\b|$)', 'g');
 const email           = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gi;
+const contractions    = /(^|\b)(.*?)(n't|'ll|'d|'re|'ve|'s|'m|'all)(\b|$)/g;
 
 const ascii_emojis    = {
   'o/'         : '👋',
@@ -193,6 +194,9 @@ function normalize_emojis(s) {
   return s.replace(epattern, (m, p1, p2, p3, offset, s) => p1 + ascii_emojis[p2] + p3);
 }
 
+function fix_contractions(s) {
+  return s.replace(contractions, (m, p1, p2, p3, offset, s) => p2 + p3.replace("'", "___"));
+}
 function twenglish_cleaner(tw, { urls = true, hashtags = false, mentions = true } = {}) {
   let ctw = tw.normalize('NFKC').replace(default_space, " ").replace(/^RT\s+@\S+\s+/, "").replace(/^RT\s+/, "");
 
@@ -207,7 +211,8 @@ function twenglish_cleaner(tw, { urls = true, hashtags = false, mentions = true 
            .replace(email, 'e\u20e3')
            .replace(/b\*tch/gi, "bitch")
            .replace(/f\*ck/gi, "fuck");
-    
+
+  ctw = fix_contractions(ctw);
   ctw = normalize_emojis(ctw).replace(number, 'n\u20e3');
   ctw = ctw.replace(breaking_punct, " $1 ");
 
@@ -215,7 +220,7 @@ function twenglish_cleaner(tw, { urls = true, hashtags = false, mentions = true 
 
   //console.log(words);
   let new_words = words.map(clean_word).filter(w => w != "" && !w.match(punct));
-  return new_words.join(" ");
+  return new_words.join(" ").replace(/___/g, "'");
 }
 
 function clean_word(w) {

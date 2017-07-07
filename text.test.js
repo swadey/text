@@ -20,8 +20,8 @@ test("basic cleaning", () => {
   expect(text.twenglish_cleaner('#test#word', { hashtags : false })).toBe("#test #word");
   expect(text.twenglish_cleaner('test@@@word', { hashtags : false })).toBe("test word");
   expect(text.twenglish_cleaner('test@word', { hashtags : false })).toBe("test word");
-  expect(text.twenglish_cleaner('y\'all', { hashtags : false })).toBe("y all");
-  expect(text.twenglish_cleaner('i\'m it\'s', { hashtags : false })).toBe("i m it s");
+  expect(text.twenglish_cleaner('y\'all', { hashtags : false })).toBe("y'all");
+  expect(text.twenglish_cleaner('i\'m it\'s', { hashtags : false })).toBe("i'm it's");
 });
 
 test("retweet handling", () => {
