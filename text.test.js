@@ -22,6 +22,7 @@ test("basic cleaning", () => {
   expect(text.twenglish_cleaner('test@word', { hashtags : false })).toBe("test word");
   expect(text.twenglish_cleaner('y\'all', { hashtags : false })).toBe("y'all");
   expect(text.twenglish_cleaner('i\'m it\'s', { hashtags : false })).toBe("i'm it's");
+  expect(text.twenglish_cleaner("I'M IT'S", { hashtags : false })).toBe("I'M IT'S");
 });
 
 test("retweet handling", () => {
@@ -37,7 +38,9 @@ test("replacement handling", () => {
   expect(text.twenglish_cleaner('12/10/1992', { hashtags : false })).toBe("d\u20e3");
   expect(text.twenglish_cleaner('test@word.com', { hashtags : false })).toBe("e\u20e3");
   expect(text.twenglish_cleaner('12am', { hashtags : false })).toBe("t\u20e3");
+  expect(text.twenglish_cleaner('12AM', { hashtags : false })).toBe("t\u20e3");
   expect(text.twenglish_cleaner('12:00am', { hashtags : false })).toBe("t\u20e3")
+  expect(text.twenglish_cleaner('12:00AM', { hashtags : false })).toBe("t\u20e3")
   expect(text.twenglish_cleaner('well-timed', { hashtags : false })).toBe("well-timed");
   expect(text.twenglish_cleaner('$1.00', { hashtags : false })).toBe("c\u20e3");
   expect(text.twenglish_cleaner('$100,000.0', { hashtags : false })).toBe("c\u20e3");

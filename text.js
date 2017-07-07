@@ -25,12 +25,12 @@ const currency        = XRE('(^|\\s)[+-]?\\p{Sc}\\d+([.,]\\d+)*(\\b|$)', 'g');
 const percent         = XRE('(^|\\b)[+-]?\\d+([.,]\\d+)*%(\\b|$)', 'g');
 const number          = XRE('(^|\\b)[+-]?\\d+([.,]\\d+)*(\\b|$)', 'g');
 const url             = XRE('(^|\\b)(https?|s?ftp):\\S+(\\b|$)', 'g');
-const time1           = XRE('(^|\\b)\\d+:\\d+(am|pm)(\\b|$)', 'g');
-const time2           = XRE('(^|\\b)\\d+(am|pm)(\\b|$)', 'g');
+const time1           = XRE('(^|\\b)\\d+:\\d+(am|pm)(\\b|$)', 'gi');
+const time2           = XRE('(^|\\b)\\d+(am|pm)(\\b|$)', 'gi');
 const date1           = XRE('(^|\\b)\\d+[-/]\\d+(\\b|$)', 'g');
 const date2           = XRE('(^|\\b)\\d+[-/]\\d+[-/]\\d+(\\b|$)', 'g');
 const email           = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gi;
-const contractions    = /(^|\b)(.*?)(n't|'ll|'d|'re|'ve|'s|'m|'all)(\b|$)/g;
+const contractions    = /(^|\b)(.*?)(n't|'ll|'d|'re|'ve|'s|'m|'all)(\b|$)/gi;
 
 const ascii_emojis    = {
   'o/'         : '👋',
