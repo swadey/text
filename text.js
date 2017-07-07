@@ -36,7 +36,7 @@ const contractions    = /(^|\b)(.*?)(n't|'ll|'d|'re|'ve|'s|'m|'all)(\b|$)/gi;
 // Tokenizers
 // -------------------------------------------------------------------------------------------------------------------------
 function fix_contractions(s) {
-  return s.replace(contractions, (m, p1, p2, p3, offset, s) => p2 + p3.replace("'", "___"));
+  return s.replace(contractions, (m, p1, p2, p3, offset, s) => p2 + p3.replace("'", "~"));
 }
 
 function twe_cleaner(tw) {
@@ -44,9 +44,9 @@ function twe_cleaner(tw) {
 
   ctw = entities.decode(ctw);
   ctw = ctw.replace(/#/g, " #");
-  ctw = ctw.replace(currency, '$1c\u20e3')
+  ctw = ctw.replace(url, 'u\u20e3')
+           .replace(currency, '$1c\u20e3')
            .replace(percent, 'p\u20e3')
-           .replace(url, 'u\u20e3')
            .replace(time1, 't\u20e3').replace(time2, 't\u20e3')
            .replace(date2, 'd\u20e3').replace(date1, 'd\u20e3')
            .replace(mention, '$1m\u20e3')
@@ -62,7 +62,7 @@ function twe_cleaner(tw) {
 
   //console.log(words);
   let new_words = words.map(clean_word).filter(w => w != "" && !w.match(punct));
-  return new_words.join(" ").replace(/___/g, "'");
+  return new_words.join(" ")//.replace(/___/g, "'");
 }
 
 function clean_word(w) {

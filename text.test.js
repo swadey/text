@@ -10,15 +10,16 @@ test("basic cleaning", () => {
   expect(text.twe_cleaner('test"""word')).toBe("test word");
   expect(text.twe_cleaner('test@@@word')).toBe("test word");
   expect(text.twe_cleaner('test@word')).toBe("test word");
+  expect(text.twe_cleaner('test~word')).toBe("test~word");
 });
 
 test("quote/contraction handling", () => {
   expect(text.twe_cleaner('test,\'.word')).toBe("test word");
   expect(text.twe_cleaner('test\' .word')).toBe("test word");
   expect(text.twe_cleaner('test\'em .word')).toBe("test em word");
-  expect(text.twe_cleaner('y\'all')).toBe("y'all");
-  expect(text.twe_cleaner('i\'m it\'s')).toBe("i'm it's");
-  expect(text.twe_cleaner("I'M IT'S")).toBe("I'M IT'S");
+  expect(text.twe_cleaner('y\'all')).toBe("y~all");
+  expect(text.twe_cleaner('i\'m it\'s')).toBe("i~m it~s");
+  expect(text.twe_cleaner("I'M IT'S")).toBe("I~M IT~S");
 });
 
 test("hashtag handling", () => {
