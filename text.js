@@ -1,7 +1,7 @@
 // -------------------------------------------------------------------------------------------------------------------------
 // Exports
 // -------------------------------------------------------------------------------------------------------------------------
-exports.twenglish_cleaner   = twenglish_cleaner;
+exports.twe_cleaner   = twe_cleaner;
 
 // -------------------------------------------------------------------------------------------------------------------------
 // Imports
@@ -38,7 +38,8 @@ const contractions    = /(^|\b)(.*?)(n't|'ll|'d|'re|'ve|'s|'m|'all)(\b|$)/gi;
 function fix_contractions(s) {
   return s.replace(contractions, (m, p1, p2, p3, offset, s) => p2 + p3.replace("'", "___"));
 }
-function twenglish_cleaner(tw, { urls = true, hashtags = false, mentions = true } = {}) {
+
+function twe_cleaner(tw) {
   let ctw = tw.normalize('NFKC').replace(default_space, " ").replace(/^RT\s+@\S+\s+/, "").replace(/^RT\s+/, "");
 
   ctw = entities.decode(ctw);
