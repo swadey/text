@@ -50,7 +50,7 @@ function twe_cleaner(tw) {
            // .replace(time1, 't\u20e3').replace(time2, 't\u20e3')
            // .replace(date2, 'd\u20e3').replace(date1, 'd\u20e3')
            .replace(mention, '$1m\u20e3')
-           // .replace(email, 'e\u20e3')
+           .replace(email, 'e\u20e3')
            .replace(/b\*tch/gi, "bitch")
            .replace(/f\*ck/gi, "fuck");
 
