@@ -45,8 +45,8 @@ function twe_cleaner(tw) {
   ctw = entities.decode(ctw);
   ctw = ctw.replace(/#/g, " #");
   ctw = ctw.replace(url, 'u\u20e3')
-           // .replace(currency, '$1c\u20e3')
-           // .replace(percent, 'p\u20e3')
+           .replace(currency, '$1c\u20e3')
+           .replace(percent, 'p\u20e3')
            .replace(time1, 't\u20e3').replace(time2, 't\u20e3')
            .replace(date2, 'd\u20e3').replace(date1, 'd\u20e3')
            .replace(mention, '$1m\u20e3')
